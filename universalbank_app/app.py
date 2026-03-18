@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -13,6 +14,10 @@ from sklearn.metrics import (
 )
 import warnings
 warnings.filterwarnings("ignore")
+
+# Resolve dataset path relative to this script (works locally AND on Streamlit Cloud)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "UniversalBank.csv")
 
 # ── PAGE CONFIG ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -80,7 +85,7 @@ def sh(text):
 # ── DATA & MODELS ─────────────────────────────────────────────────────────────
 @st.cache_data
 def load_data():
-    df = pd.read_csv("UniversalBank.csv")
+    df = pd.read_csv(DATA_PATH)
     df.columns = df.columns.str.strip()
     df["Experience"] = df["Experience"].clip(lower=0)
     return df
